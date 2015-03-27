@@ -12,7 +12,15 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+SETTINGS_DIR = os.path.dirname(__file__)
+PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
+PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
+
+TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
+DATABASE_PATH = os.path.join(PROJECT_PATH, 'adi_app.db')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -36,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'adi_app',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,10 +65,24 @@ WSGI_APPLICATION = 'adi_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3', #django.db.backends.postgresql_psycopg2',
+#        'NAME': DATABASE_PATH, #'NAME': 'adidb',
+		#'USER': 'postgres',
+		#'PASSWORD': 'kokett35',
+		#'HOST': '127.0.0.1',
+		#'PORT': '5432',
+		
+		
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'adidb',
+		'USER': 'postgres',
+		'PASSWORD': 'kokett35',
+		'HOST': '127.0.0.1',
+		'PORT': '5432',
     }
 }
 
