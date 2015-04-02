@@ -10,11 +10,10 @@ from adi_app.models import Question, Choice
 # Create your views here.
 
 
-def IndexView(generic.ListView):
+class IndexView(generic.ListView):
 	template_name = 'adi_app/index.html'
 	context_object_name = 'latest_question_list'
-	
-	def get_queryset(self)
+	def get_queryset(self):
 		return Question.objects.order_by('-pub_date')[:5]
 		
 #	latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -33,15 +32,19 @@ def time(request):
 	html = "<html><body>It is now %s. </body></html>" % now
 	return HttpResponse(html)
 	
+class DetailView(generic.DetailView):
+	model = Question
+	template_name = 'adi_app/question.html'
 	
-def question(request, question_id):
-	try:
-		question = Question.objects.get(pk=question_id)
-	except Question.DoesNotExist:
-		raise Http404("Question does not exist")
-	return render(request, 'adi_app/question.html', {'question': question})
 
-	return HttpResponse("You are looking at question number %s." % question_id)
+#def question(request, question_id):
+#	try:
+#		question = Question.objects.get(pk=question_id)
+#	except Question.DoesNotExist:
+#		raise Http404("Question does not exist")
+#	return render(request, 'adi_app/question.html', {'question': question})
+#
+#	return HttpResponse("You are looking at question number %s." % question_id)
 	
 	
 def vote(request, question_id):
@@ -60,6 +63,10 @@ def vote(request, question_id):
 		return HttpResponseRedirect(reverse('results', args=(p.id,)))
 		
 		
-def results(request, question_id):
-	question = get_object_or_404(Question, pk=question_id)
-	return render(request, 'adi_app/results.html', {'question': question})
+class ResultsView(generic.DetailView):
+	model = Question
+	template_name = 'adi_app/results.html'
+
+#def results(request, question_id):
+#	question = get_object_or_404(Question, pk=question_id)
+#	return render(request, 'adi_app/results.html', {'question': question})
