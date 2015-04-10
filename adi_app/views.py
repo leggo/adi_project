@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 import datetime
 from django.core.urlresolvers import reverse 
 from django.views import generic
+from django.utils import timezone
 
 from adi_app.models import Question, Choice
 
@@ -14,7 +15,10 @@ class IndexView(generic.ListView):
 	template_name = 'adi_app/index.html'
 	context_object_name = 'latest_question_list'
 	def get_queryset(self):
-		return Question.objects.order_by('-pub_date')[:5]
+		
+		return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+	
+#		return Question.objects.order_by('-pub_date')[:5]
 		
 #	latest_question_list = Question.objects.order_by('-pub_date')[:5]
 #	context = {'latest_question_list': latest_question_list}
@@ -35,7 +39,8 @@ def time(request):
 class DetailView(generic.DetailView):
 	model = Question
 	template_name = 'adi_app/question.html'
-	
+	def get_queryset(self):
+		return Question.objects.filter(pub_date__lte=timezone.now())
 
 #def question(request, question_id):
 #	try:
